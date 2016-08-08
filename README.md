@@ -1,5 +1,5 @@
 # Learning React.js
-A simple Hello World application showing a simple React.js component.
+A repository used for learning to use React.js
 
 ## Resources
 Resources and code examples used and/or created while I am learning to use React.js
