@@ -1,4 +1,7 @@
 # Learning React.js
+A simple Hello World application showing a simple React.js component.
+
+## Resources
 Resources and code examples used and/or created while I am learning to use React.js
  - [React.js](https://facebook.github.io/react/)
  - [My React-Learning Journey](https://forums.meteor.com/t/my-react-learning-journey/20252)
