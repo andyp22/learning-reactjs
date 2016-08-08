@@ -1,7 +1,7 @@
 {
   "name": "learning-reactjs",
   "version": "0.1.0",
-  "description": "Learning React.js with the RecatJS Program",
+  "description": "Project boilerplate",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

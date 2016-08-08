@@ -1,5 +1,5 @@
 # Learning React.js
-A repository used for learning to use React.js
+This is the project boilerplate I have developed while learning React.js
 
 ## Resources
 Resources and code examples used and/or created while I am learning to use React.js
