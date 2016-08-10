@@ -6,6 +6,18 @@ var HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   inject: 'body'
 });
 
+var HtmlWebpackPluginCSSConfig = new HtmlWebpackPlugin({
+  template: __dirname + '/app/styles/styles.css',
+  filename: 'styles/styles.css',
+  inject: 'body'
+});
+
+var HtmlWebpackPluginBootstrapConfig = new HtmlWebpackPlugin({
+  template: __dirname + '/node_modules/bootstrap/dist/css/bootstrap.css',
+  filename: 'styles/bootstrap.css',
+  inject: 'body'
+});
+
 module.exports = {
   entry: [
     './app/index.js'
@@ -20,6 +32,8 @@ module.exports = {
     path: __dirname + '/dist'
   },
   plugins: [
-    HtmlWebpackPluginConfig
+    HtmlWebpackPluginConfig,
+    HtmlWebpackPluginCSSConfig,
+    HtmlWebpackPluginBootstrapConfig
   ]
 };
