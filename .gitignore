@@ -13,6 +13,5 @@ ehthumbs.db
 # Other #
 # ====== #
 node_modules/
-dist/
 .project
 npm-debug.log
