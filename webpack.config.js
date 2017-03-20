@@ -1,4 +1,5 @@
 var path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   entry: './src/index.tsx',
@@ -23,10 +24,68 @@ module.exports = {
         loader: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.scss$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                minimize: true,
+                discardComments: {
+                  removeAll: true
+                }
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true
+              }
+            }
+          ]
+        })
+      },
+      {
+        test: /\.css?$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                minimize: true,
+                discardComments: {
+                  removeAll: true
+                }
+              }
+            }
+          ]
+        })
+      }
     ]
   },
+  plugins: [
+      new ExtractTextPlugin({
+        filename: 'styles.css',
+        allChunks: true,
+      })
+  ],
+  // Where to resolve our loaders
+  resolveLoader: {
+    modules: [path.join(__dirname, 'node_modules')],
+    moduleExtensions: ['-loader'],
+  },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    // Directories that contain our modules
+    modules: [path.resolve(__dirname, 'src'), 'node_modules'],
+    descriptionFiles: ['package.json'],
+    moduleExtensions: ['-loader'],
+    // Extensions used to resolve modules
+    extensions: [ '.ts', '.tsx', '.js', '.scss', '.css']
   },
   devtool: 'inline-source-map',
   devServer: {
