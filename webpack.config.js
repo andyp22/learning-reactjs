@@ -5,14 +5,15 @@ module.exports = {
   entry: './src/index.tsx',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/dist'
   },
   module: {
     rules: [
       {
         enforce: 'pre',
         test: /\.js$/,
-        loader: "source-map-loader"
+        use: "source-map-loader"
       },
       {
         enforce: 'pre',
@@ -21,22 +22,34 @@ module.exports = {
       },
       {
         test: /\.tsx?$/,
-        loader: 'ts-loader',
+        use: 'ts-loader',
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: "file-loader?name=/images/[name].[ext]"
       },
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          loader: [
+          use: [
             {
               loader: 'css-loader',
               options: {
                 sourceMap: true,
                 minimize: true,
+                importLoaders: 2,
+                localIdentName: '[hash:base64:5]',
                 discardComments: {
                   removeAll: true
                 }
+              }
+            },
+            {
+              loader: 'resolve-url-loader',
+              options: {
+                sourceMap: true
               }
             },
             {
@@ -50,9 +63,9 @@ module.exports = {
       },
       {
         test: /\.css?$/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          loader: [
+        //loader: ExtractTextPlugin.extract({
+          //fallback: 'style-loader',
+          use: [
             {
               loader: 'css-loader',
               options: {
@@ -64,14 +77,14 @@ module.exports = {
               }
             }
           ]
-        })
+        //})
       }
     ]
   },
   plugins: [
       new ExtractTextPlugin({
-        filename: 'styles.css',
-        allChunks: true,
+        filename: 'css/styles.css',
+        allChunks: true
       })
   ],
   // Where to resolve our loaders
