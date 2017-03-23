@@ -1,5 +1,19 @@
 var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const cssLoader = {
+  loader: 'css-loader',
+  options: {
+    sourceMap: true,
+    minimize: true,
+    importLoaders: 2,
+    localIdentName: '[hash:base64:5]',
+    discardComments: {
+      removeAll: true
+    }
+  }
+};
 
 module.exports = {
   entry: './src/index.tsx',
@@ -10,42 +24,41 @@ module.exports = {
   },
   module: {
     rules: [
+      // Source maps for JavaScript and Typescript files.
+      // Added to bundle.js
       {
         enforce: 'pre',
-        test: /\.js$/,
+        test: /\.(js|tsx?)$/,
         use: "source-map-loader"
       },
-      {
-        enforce: 'pre',
-        test: /\.tsx?$/,
-        use: "source-map-loader"
-      },
+      // Loader for Typescript files.
+      // Added to bundle.js
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      // Image loader, does not include SVGs which are assumed to be
+      // strictly for cross browser font support.
+      // Added to /images/filename.ext
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(jpe?g|png|gif)$/i,
         use: "file-loader?name=/images/[name].[ext]"
       },
+      // Font loader
+      // Added to /fonts/filename.ext
+      {
+        test: /\.(eot|woff|ttf|svg)$/i,
+        use: "file-loader?name=/fonts/[name].[ext]"
+      },
+      // SASS loader and extractor
+      // Extracts as CSS to /css/styles.css
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-                minimize: true,
-                importLoaders: 2,
-                localIdentName: '[hash:base64:5]',
-                discardComments: {
-                  removeAll: true
-                }
-              }
-            },
+            cssLoader,
             {
               loader: 'resolve-url-loader',
               options: {
@@ -61,31 +74,31 @@ module.exports = {
           ]
         })
       },
+      // CSS loader
+      // Added to /css/styles.css
       {
         test: /\.css?$/,
-        //loader: ExtractTextPlugin.extract({
-          //fallback: 'style-loader',
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
           use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-                minimize: true,
-                discardComments: {
-                  removeAll: true
-                }
-              }
-            }
+            cssLoader
           ]
-        //})
+        })
       }
     ]
   },
   plugins: [
+      // Extract CSS to /css/styles.css for better browser caching.
       new ExtractTextPlugin({
         filename: 'css/styles.css',
         allChunks: true
-      })
+      }),
+      // Copy files and directories, unmodified, to the distributable.
+      new CopyWebpackPlugin(
+        [
+          { from: 'vendor', to: 'vendor'}
+        ]
+      )
   ],
   // Where to resolve our loaders
   resolveLoader: {
@@ -101,6 +114,7 @@ module.exports = {
     extensions: [ '.ts', '.tsx', '.js', '.scss', '.css']
   },
   devtool: 'inline-source-map',
+  // Webpack-dev-server settings
   devServer: {
     port: 9000
   },
