@@ -1,5 +1,5 @@
 # Learning React.js
-This is a project boilerplate I have developed while learning React.js
+Adding Redux to the project boilerplate as well as learning Redux basics.
 
 ## Resources
 Resources and code examples used while I am learning React.js
@@ -12,3 +12,4 @@ Resources and code examples used while I am learning React.js
  - [Meteor's React Guide](https://guide.meteor.com/react.html)
  - [Webpack Guides](https://webpack.js.org/guides/)
  - [Typescript](https://www.typescriptlang.org/docs/tutorial.html)
+ - [Redux](http://redux.js.org/)
